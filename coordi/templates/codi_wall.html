@@ -1,0 +1,25 @@
+{% extends "codi_sidebar.html" %}
+
+{% block sidemain %}
+<h1> Wall </h1>
+{% if is_page_owner %}
+    <form action="" method="post">{% csrf_token %}
+        <div class="field">
+            <label for="id_post"><h4>What's on your mind?</h4> </label></br>
+            {{ form.post }}
+        </div>
+    	<input type="submit" value="Post" />
+        
+      </form>
+	
+{% endif %}
+<hr/>
+<table width = "50%">
+{% for post in posts %}
+
+<tr><td><a href="/post/{{post.post_id}}/"><h2>{{post.message}}</h2></a></td></tr>
+<tr><td align = right>{{post.time_modified}}</td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

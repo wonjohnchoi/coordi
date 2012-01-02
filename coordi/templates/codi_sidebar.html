@@ -1,0 +1,31 @@
+{% extends "sidebar.html" %}
+{% block sidebar %}
+<h3><a href="/codi/{{codi.user.username}}/"> Coordi</a><h3>
+<h2><font color="white">{{codi.user.get_full_name}}</font></h2>
+
+<table width = "100%" border = "0" bordercolor = "black">
+<tr><td><a href="/codi/{{codi.user.username}}/wall/">Wall</a></td></tr>
+<tr><td><a href="/codi/{{codi.user.username}}/gallery/">Gallery</a></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/codi/{{codi.user.username}}/gallery/sample/">Samples</a></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/codi/{{codi.user.username}}/gallery/review/">Reviews</a></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/codi/{{codi.user.username}}/gallery/theme/">Previous Themes</a></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/codi/{{codi.user.username}}/gallery/episode/">Previous Episodes</a></td></tr>
+
+<tr><td><a href="/codi/{{codi.user.username}}/info/">Info</a></td></tr>
+<tr><td><a href="/codi/{{codi.user.username}}/schedule/">Schedule</a></td></tr>
+<tr><td><a href="/codi/{{codi.user.username}}/consulting/">Consulting</a></td></tr>
+<tr><td><a href="/codi/{{codi.user.username}}/review/">Review</a></td></tr>
+</table>
+
+<!--
+<form action="" method="get">
+
+  <button name="sm" type="submit" value="gallery">Gallery</button><br/>
+  <button name="sm" type="submit" value="info">Info</button><br/>
+	<button name="sm" type="submit" value="wall">Wall</button><br/>
+  <button name="sm" type="submit" value="schedule">Schedule</button><br/>
+  <button name="sm" type="submit" value="consulting">Consulting</button><br/>
+  <button name="sm" type="submit" value="review">Review</button><br/>
+</form>
+-->	
+{% endblock %}

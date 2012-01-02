@@ -1,0 +1,26 @@
+{% extends "codi_sidebar.html" %}
+
+{% block sidemain %}
+{% for title, albums in sections %}
+	<h1> {{title}} </h1>
+	<hr/>
+	<table width = "100%">
+		<tr>
+		{% for album in albums %}
+			
+			{% if forloop.counter0|divisibleby:"3" %}
+				{% if forloop.counter0 != 0 %}
+				</tr><tr>
+				{% endif %}
+			{% endif %}
+			
+			<td width="33%">
+			<h2>{{album.title}}</h2> {{album.time_created}} <br/>
+			<a href="/album/{{album.album_id}}/"><img src="{{ MEDIA_URL }}photos/{{album.title_photo.photo_id}}/" height = 400 width = 300 /></a>
+			</td>
+	
+		{% endfor %}
+		</tr>
+	</table>
+{% endfor %}
+{% endblock %}

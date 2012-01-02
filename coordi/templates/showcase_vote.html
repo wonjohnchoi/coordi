@@ -1,0 +1,59 @@
+{% extends "nosidebar.html" %}
+
+{% block main %}
+<h1> Showcase </h1>
+
+	<table>
+	<tr>
+	<td width = "50%">
+	
+	<table>
+	<tr><td><h2>{{album1.title}}</h2></td></tr>
+	<tr>
+	{% for photo in photos1 %}
+			{% if forloop.counter0|divisibleby:"3" %}
+			{% if forloop.counter0 != 0 %}
+			</tr><tr>
+			{% endif %}
+		{% endif %}
+	
+		<td>
+		<a href = "/album/{{album1.album_id}}"><img src="{{ MEDIA_URL }}photos/{{photo.photo_id}}"  width = 150 height = 200/></a>
+		</td>
+		
+	{% endfor %}
+	</tr>
+	<tr><td>
+	<p><h3>{{album1.message}}</h3></p>
+	</td></tr>	
+	</table>
+	
+	</td>
+	<td width = "50%">
+	
+	<table>
+	<tr><td><h2>{{album2.title}}</h2></td></tr>
+	<tr>
+	{% for photo in photos2 %}
+			{% if forloop.counter0|divisibleby:"3" %}
+			{% if forloop.counter0 != 0 %}
+			</tr><tr>
+			{% endif %}
+		{% endif %}
+	
+		<td>
+		<img src="{{ MEDIA_URL }}photos/{{photo.photo_id}}"  width = 150 height = 200/>
+		</td>
+		
+	{% endfor %}
+	</tr>
+	<tr><td>
+	<p><h3>{{album2.message}}</h3></p>
+	</td></tr>	
+	</table>
+	
+	</tr>
+	</td>
+	</table>
+
+{% endblock %}

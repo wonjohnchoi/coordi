@@ -1,27 +1,28 @@
 # Django settings for coordi project.
+import os.path
+DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
+    ('Wonjohn Choi', 'wonjohn.choi@gmail.com'),
 )
 MANAGERS = ADMINS
 
 
-import os.path
-DIR = os.path.dirname(__file__)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(DIR, 'sqlite.db'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'wonjohnchoi', # Or path to database file if using sqlite3.
+        'USER': 'wonjohnchoi',                      # Not used with sqlite3.
+        'PASSWORD': 'webfaction2310aa',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -29,7 +30,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Seoul'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -108,6 +109,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(DIR, 'templates'),
+
 )
 
 INSTALLED_APPS = (
@@ -146,3 +149,17 @@ LOGGING = {
         },
     }
 }
+LOGIN_REDIRECT_URL = '/home/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+
+MEDIA_ROOT = os.path.join(DIR, 'files', 'media')
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(DIR, 'files', 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(DIR, 'static'),
+)
+
+ADMIN_MEDIA_PREFIX = '/static/admin/'

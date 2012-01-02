@@ -1,0 +1,15 @@
+{% extends "sidebar.html" %}
+{% block sidebar %}
+<h1>{{user.get_full_name}}</h1>
+
+<form action="" method="get">
+<h1 style="text-align:center"><a href="/home/">Home</a></h1>
+
+<!-- sm = Side Menu -->
+  <button name="sm" type="submit" value="inbox">Inbox</button><br/>
+  <button name="sm" type="submit" value="closet">My Closet</button><br/>
+  <button name="sm" type="submit" value="coach">My Favorite Coaches</button><br/>
+ <!-- <button name="sm" type="submit" value="message">Messages</button><br/> -->
+</form>
+	
+{% endblock %}

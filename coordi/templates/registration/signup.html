@@ -1,0 +1,52 @@
+{% extends "nosidebar.html" %}
+
+{% block main %}
+	<h1> Signup </h1>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.            
+        </p>
+    {% endif %}
+	
+    <form action="" method="post">{% csrf_token %}
+        <div class="field">
+            {{ form.first_name.errors }}
+            <label for="id_first_name">First Name:</label>
+            {{ form.first_name }}
+        </div>
+        <div class="field">
+            {{ form.last_name.errors }}
+            <label for="id_last_name">Last Name:</label>
+            {{ form.last_name }}
+        </div>
+        <div class="field">
+            {{ form.username.errors }}
+            <label for="id_username">User Name:</label>
+            {{ form.username }}
+        </div>
+        
+        <div class="field">
+            {{ form.email.errors }}
+            <label for="id_email">Your Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="field">
+            {{ form.email2.errors }}
+            <label for="id_email2">Re-enter Email:</label>
+            {{ form.email2 }}
+        </div>
+        <div class="field">
+            {{ form.password.errors }}
+            <label for="id_password">Your Password:</label>
+            {{ form.password }}
+        </div>
+        <div class="field">
+            {{ form.password2.errors }}
+            <label for="id_password2">Re-enter Password:</label>
+            {{ form.password2 }}
+        </div>
+        
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

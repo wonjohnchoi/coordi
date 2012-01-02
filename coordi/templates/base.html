@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Codi&Coach</title>
+	    
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/base.css" />
+</head>
+
+<body>
+	<span id="topbar"> 	
+		<table width="100%">
+		<tr valign="top" align="center">
+		
+		<!--
+		<td width = 16>	<a href="/"><img src="{{ STATIC_URL }}logo" width="16" height="16" /></a></td>
+		-->
+		<td><a href="/">Co&Co</a></td>
+		<td><a href="/info/how_it_works/">How It Works</a></td>
+		<!--<td><a href="/codiscoach/">Codi's Coach</a></td>
+		
+		<td><a href="/tryout/">Try-Out</a></td>-->
+      <td><a href="/showcase/">Showcase</a></td>
+		
+		
+	    {% if user.is_authenticated %}
+		<td><a href="/message/">Messages</a></td>   
+		{% endif %}
+		
+		<td><form name="input" action="/search/" method="get">
+		<input type="text" name="arg" />
+		<!--<input type="submit" value="Submit" />--></form></td>
+		
+		<!--
+	    {% if user.is_authenticated %}	 
+		<td><a href="/home/">{{user.get_full_name}}</a></td>
+			{% if custom_user.codi %}
+			<td><a href="/codi/{{user.username}}">My Codi</a></td>
+			<td><a href="/setting/codi/">Codi Setting</a></td>	
+			{% endif %}
+		<td><a href="/setting/account/">Account Setting</a></td>
+		<td><a href="/logout/">Logout</a></td>
+	    {% else %}
+		<td><a href="/login/">Login</a></td>
+		{% endif %}-->
+		
+	    {% if user.is_authenticated %}	 	
+		<td onMouseOver="document.all.dropdown.style.display = 'block'">
+		<a href="/home/">{{user.username}}</a></td>
+	    {% else %}
+		<td><a href="/login/">Login</a></td>
+		{% endif %}
+	
+		</tr>
+		</table>
+	  		
+	</span>
+	
+    {% if user.is_authenticated %}
+        <table id="dropdown">
+            <tr><td>
+            <a href="/home/">Home</a>
+            </td></tr>
+        {% if custom_user.codi %}
+            <tr><td>
+            <a href="/codi/{{user.username}}">My Coordi</a>
+            </td></tr>
+    
+            <tr><td>
+            <a href="/setting/codi/">Coordi Setting</a></td>
+            </td></tr>
+        {% endif %}
+
+            <tr><td>
+            <a href="/setting/account/">Account Setting</a>
+            </td></tr>
+
+            <tr><td>
+            <a href="/logout/">Logout</a>
+            </td></tr>
+        </table>
+    {% endif %}
+    
+	{% block content %} {% endblock %}
+    {% block footer %}
+    <!--
+	<div id="footer">
+	<hr>
+	    <a href="/info/how_it_works">How It Works</a> | 
+	    <br/>
+		<div id="copyright">&copy; Coach&Codi</div>
+	  	<br/>
+	</div>
+	-->
+    {% endblock %}
+    
+</body>
+</html>

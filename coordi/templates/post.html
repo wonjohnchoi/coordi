@@ -1,0 +1,35 @@
+{% extends "codi_sidebar.html" %}
+
+{% block sidemain %}
+	<h2>{{post.message}}</h2>
+    <form action="" method="post">{% csrf_token %}
+        <div class="field">
+            <label for="id_comment">What's your response? </label></br>
+            {{ form.comment }}
+        </div>
+    	<input type="submit" value="Comment" />
+        
+  </form>
+	<table width = "50%"
+		{% for comment in comments %}
+		<tr>
+			<td>
+			<h3>
+			{% if comment.owner.codi %}
+				<a href="/codi/{{comment.owner.user.username}}/">{{comment.owner.user.get_full_name}}</a>
+			{% else %}
+				{{comment.owner.user.username}}
+			{% endif %}
+			</h3>
+			<br/>
+			{{comment.message}}
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+			{{comment.time_modified}}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

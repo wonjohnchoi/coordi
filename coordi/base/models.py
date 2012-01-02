@@ -1,31 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 import os, os.path
 from binascii import hexlify
-#from CodiPlatform.settings import basedir
 import datetime
+
 def _createId():
     return hexlify(os.urandom(16))
 
-def _createPath(instance, filename):
+def _createPhotoPath(instance, filename):
     return os.path.join('photos', instance.photo_id)
-from django.db import models
-from django.contrib.auth.models import User
-#from CodiPlatform.general.models import Photo
-# Create your models here.
-# Create your models here.
-
-class Codi(models.Model):
-    birthday = models.DateField(blank = True)
-    info = models.TextField()
-    website = models.URLField(blank = True)
-    #profile_photo = models.OneToOneField(Photo)
-
 
 class CustomUser(models.Model):
     #user_id = models.CharField(max_length = 20, primary_key = True)
     #profile_photo = models.ImageField(upload_to=os.path.join(os.path.dirname(__file__), 'photo/codi/%d'%codi_id))
     user = models.OneToOneField(User)
-    codi = models.OneToOneField(Codi, null = True, blank = True)
+    #codi = models.OneToOneField(Codi, null = True, blank = True)
     accum_point = models.IntegerField(default = 0)
     accum_cach = models.IntegerField(default = 0)
     point = models.IntegerField(default = 0)
@@ -51,22 +41,10 @@ class Message(models.Model):
     sender_id = models.CharField(max_length = 30)
     recipient_id = models.CharField(max_length = 30)
 
-'''
-# Create your models here.
-class User(models.Model):
-    #user_id = models.CharField(max_length = 20, primary_key = True)
-    first_name = models.CharField(max_length = 20, verbose_name = 'First Name:')#, min_length = 2)
-    last_name = models.CharField(max_length = 20, verbose_name = 'Last Name:')#, min_length = 2)
-    #profile_photo = models.ImageField(upload_to=os.path.join(os.path.dirname(__file__), 'photo/codi/%d'%codi_id))
-    #email = models.CharField(verbose_name = 'Your Email:')
-    
-    def __unicode__(self):
-        return '%s %s' %(self.first_name, self.last_name)
-    '''
 class TitlePhoto(models.Model):
     photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)
     #title = models.CharField(max_length=30)#, min_length = 4)
-    image = models.ImageField(upload_to = _createPath)
+    image = models.ImageField(upload_to = _createPhotoPath)
 
 class Theme(models.Model):
     season = models.PositiveIntegerField()
@@ -107,7 +85,7 @@ class Album(models.Model):
 class Photo(models.Model):
     photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)
     #title = models.CharField(max_length=30)#, min_length = 4)
-    image = models.ImageField(upload_to = _createPath)
+    image = models.ImageField(upload_to = _createPhotoPath)
     album = models.ForeignKey(Album)
     position = models.CharField(max_length=1)
     

@@ -1,0 +1,8 @@
+{% extends "nosidebar.html" %}
+
+{% block main %}
+<h1> Search Result </h1>
+{% for result in results %}
+<li><td><a href="/codi/{{result.user.username}}">{{result.user.get_full_name}}</a></li>
+{% endfor %}
+{% endblock %}

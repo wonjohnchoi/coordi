@@ -1,0 +1,8 @@
+{% extends "nosidebar.html" %}
+
+{% block main %}
+<h1> Showcase - Season {{season}} Episode {{episode}}</h1>
+{% for theme in themes %}
+<h2><a href="/showcase/{{season}}/{{episode}}/{{theme.part}}/">Theme #{{theme.part}}: {{theme.title}}</a></h2>
+{% endfor %}
+{% endblock %}

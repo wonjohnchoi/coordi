@@ -1,0 +1,32 @@
+{% extends "sidebar.html" %}
+{% block sidebar %}
+
+<!-- sm = Side Menu -->
+
+<h1 style="text-align:center"><a href="/message/">Category</a></h1>
+<br/><hr/><br/>
+
+<form>
+  <button name="sm" type="submit" value="__all">All</button><br/>
+  <button name="sm" type="submit" value="admin">System Messages</button><br/>
+  
+	{% for other in others %}
+	<button name="sm" type="submit" value="{{other.username}}">{{other.get_full_name}}</button>
+	{% endfor %}
+</form>
+{% endblock %}
+
+{% block sidemain %}
+<h1> {{user.username}} </h1>
+<table width = "40%">
+
+{% for message in messages %}
+{% if message.sender_id = user.username %}
+<tr><td>{{message.content}}</td></tr><tr><td align="right">{{message.time}}</td></tr>
+{% else %}
+<tr align="right"><td>{{message.content}}</td></tr><tr><td align="right">{{message.time}}</td></tr>
+{% endif %}
+{% endfor %}
+
+</table>
+{% endblock %}

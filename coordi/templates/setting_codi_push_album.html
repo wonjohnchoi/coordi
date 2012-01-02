@@ -1,0 +1,79 @@
+{% extends "setting_codi_sidebar.html" %}
+
+
+{% block sidemain %}
+	<h1>Add Album</h1>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.            
+        </p>
+    {% endif %}
+	{% if uploaded %}
+	New album is successfully uploaded:
+	Click <a href="/album/{{uploaded.album_id}}">{{uploaded.title}}</a>
+	{% endif %}
+	
+    <form action="" enctype="multipart/form-data" method="post">{% csrf_token %}
+
+    
+        <div class="field">
+            {{ form.title.errors }}
+            <label for="id_title">Title:</label>
+            {{ form.title }}
+        </div>
+        <div class="field">
+            {{ form.category.errors }}
+            <label for="id_category">Category:</label>
+            {{ form.category }}
+        </div>
+        
+        <div class="field">
+            {{ form.title_photo.errors }}
+            <label for="id_title_photo">Title Photo:</label>
+            {{ form.title_photo }}
+        </div>
+        
+       	
+        <div class="field">
+            {{ form.photo1.errors }}
+            <label for="id_photo1">Photo1:</label>
+            {{ form.photo1 }}
+        </div>
+        <div class="field">
+            {{ form.photo2.errors }}
+            <label for="id_photo2">Photo2:</label>
+            {{ form.photo2 }}
+        </div>
+        
+        <div class="field">
+            {{ form.photo3.errors }}
+            <label for="id_photo3">Photo3:</label>
+            {{ form.photo3 }}
+        </div>
+        <div class="field">
+            {{ form.photo4.errors }}
+            <label for="id_photo4">Photo4:</label>
+            {{ form.photo4 }}
+        </div>
+        <div class="field">
+            {{ form.photo5.errors }}
+            <label for="id_photo5">Photo5:</label>
+            {{ form.photo5 }}
+        </div>
+        <div class="field">
+            {{ form.photo6.errors }}
+            <label for="id_photo6">Photo6:</label>
+            {{ form.photo6 }}
+        </div>
+        <div class="field">
+            {{ form.message.errors }}
+            <label for="id_message">Concept:</label>
+            {{ form.message }}
+        </div>
+       
+        
+        
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "codi_sidebar.html" %}
+
+{% block sidemain %}
+	<table>
+	<tr><td><h2>{{album.title}}</h2></td></tr>
+	<tr>
+	{% for photo in photos %}
+			{% if forloop.counter0|divisibleby:"3" %}
+			{% if forloop.counter0 != 0 %}
+			</tr><tr>
+			{% endif %}
+		{% endif %}
+	
+		<td>
+		<img src="{{ MEDIA_URL }}photos/{{photo.photo_id}}"  width = 300 height = 400/>
+		</td>
+		
+	{% endfor %}
+	</tr>
+	<tr><td>
+	<p><h3>{{album.message}}</h3></p>
+	</td></tr>	
+	</table>
+	
+
+
+
+{% endblock %}
