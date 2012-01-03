@@ -1,0 +1,29 @@
+{% extends "base/sidebar.html" %}
+
+{% block sidemain %}
+<h1>Episode {{album.theme.showcase.episode_id}} : {{album.theme.subject}}</h1>
+<h2>{{album.theme.title}}</h2>
+
+<table>
+{% for entry in entries %}
+<tr><td>
+<img src="{{ MEDIA_URL }}photo/{{entry.photo.photo_id}}/"
+height = 100 width = 100 /></a>    
+</tr></td>
+<tr><td>{{entry.text}}</tr></td>
+
+{% endfor %}
+</table>
+{% endblock %}
+
+
+{% block sidebar %}
+
+<h1><a href="">Previous Episodes</a></h1>
+
+{% for album in albums %}
+<table>
+<tr><td><a href="/showcase/album/{{album.album_id}}/">Episode {{album.theme.showcase.episode_id}}</a></td></tr>
+</table>
+{% endfor %}
+{% endblock %}

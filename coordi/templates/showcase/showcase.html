@@ -1,0 +1,77 @@
+{% extends "base/nosidebar.html" %}
+
+{% block main %}
+<table>
+    <tr>
+        <td>
+        <h1>주제</h1> 
+        </td>
+        {% for i in max_albums %}
+            <td>
+            <h1>{{forloop.counter}}등! </h1>
+            </td>
+        {% endfor %}
+    </tr>
+    {% for theme in themes %}
+    <tr>
+        <td>
+        <h1>{{theme.keyword}}</h1>
+        {{theme.subject}}
+        </td>
+        {% for album in theme.albums %}
+        <td>
+        <a href="/showcase/album/{{album.album_id}}/">
+        <img src="{{ MEDIA_URL }}photo/{{album.coordi.get_profile.photo.photo_id}}/"
+        height = 100 width = 100 /></a>        
+        </td>
+        {% endfor %}
+    </tr>
+    
+    <tr>
+        <td>
+        </td>
+        
+        {% for album in theme.albums %}
+        <td>
+        Votes: {{album.vote_set.count}}
+        </td>
+        {% endfor %}
+    </tr>
+    
+    {% endfor %}
+<!--
+<table>
+	<tr>
+	{% for theme in themes %}
+	    <td>
+       	<h1>{{theme.keyword}}</h1>
+        {{theme.subject}}
+        </td>
+    {% endfor %}
+    {% for i in max_albums %}
+    <tr>
+    
+        {% for theme in themes %}
+            <td>
+            
+            THEME: {{theme.theme_id}}
+            {{i}}
+            {{theme.albums}}
+            {% with k=forloop.counter0 %}
+            <br/>{{k}}: {{theme.albums.0}}<br/>
+            {% endwith %}
+            COUNTER: {{theme.albums.forloop.counter0}}
+            {% with album=theme.albums.i %}
+                ID: {{album.album_id}}
+                <a href="/album/{{album.album_id}}/">
+                <img src="{{ MEDIA_URL }}photo/{{album.coordi.get_profile.photo.photo_id}}"
+                height = 100 width = 100 /></a>
+            {% endwith %}
+            </td>
+        {% endfor %}
+    
+    </tr>
+    {% endfor %}
+</table>
+-->
+{% endblock %}

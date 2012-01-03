@@ -1,4 +1,4 @@
-{% extends "nosidebar.html" %}
+{% extends "base/nosidebar.html" %}
 
 {% block main %}
 	<h1> Signup </h1>
@@ -46,7 +46,16 @@
             <label for="id_password2">Re-enter Password:</label>
             {{ form.password2 }}
         </div>
-        
+        <div class="field">
+            {{ form.photo.errors }}
+            <label for="id_photo">Profile Photo:</label>
+            {{ form.photo }}
+        </div>
+        <div class="field">
+            {{ form.promocode.errors }}
+            <label for="id_promocode">Promocode:</label>
+            {{ form.promocode }}
+        </div>
         <input type="submit" value="Submit">
     </form>
 {% endblock %}

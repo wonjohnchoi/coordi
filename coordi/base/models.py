@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
+from django.db.models.signals import post_save
 
 import os, os.path
 from binascii import hexlify
@@ -9,9 +10,17 @@ def _createId():
     return hexlify(os.urandom(16))
 
 def _createPhotoPath(instance, filename):
-    return os.path.join('photos', instance.photo_id)
+    return os.path.join('photo', instance.photo_id)
 
-class CustomUser(models.Model):
+class Promocode(models.Model):
+    promocode_id = models.CharField(max_length = 30, default = _createId, unique = True)
+    permissions = models.ManyToManyField(Permission)
+class Photo(models.Model):
+    photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)
+    #title = models.CharField(max_length=30)#, min_length = 4)
+    image = models.ImageField(upload_to = _createPhotoPath)
+
+class UserProfile(models.Model):
     #user_id = models.CharField(max_length = 20, primary_key = True)
     #profile_photo = models.ImageField(upload_to=os.path.join(os.path.dirname(__file__), 'photo/codi/%d'%codi_id))
     user = models.OneToOneField(User)
@@ -20,6 +29,8 @@ class CustomUser(models.Model):
     accum_cach = models.IntegerField(default = 0)
     point = models.IntegerField(default = 0)
     cash = models.IntegerField(default = 0)
+    photo = models.OneToOneField(Photo, blank = True, null = True)
+    
     #accum_votes = models.PositiveIntegerField(default = 0)
     #required_votes = models.PositiveIntegerField(default = SHOWCASE_VOTES)
     #other = models.ManyToManyField('self', through = 'Message')
@@ -34,6 +45,14 @@ class CustomUser(models.Model):
         return '%s %s' % (self.user.first_name, self.user.last_name)
 
 
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)
+
+
+
 
 class Message(models.Model):
     content = models.TextField(max_length = 500)
@@ -41,60 +60,9 @@ class Message(models.Model):
     sender_id = models.CharField(max_length = 30)
     recipient_id = models.CharField(max_length = 30)
 
-class TitlePhoto(models.Model):
-    photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)
-    #title = models.CharField(max_length=30)#, min_length = 4)
-    image = models.ImageField(upload_to = _createPhotoPath)
-
-class Theme(models.Model):
-    season = models.PositiveIntegerField()
-    episode = models.PositiveIntegerField()
-    part = models.PositiveIntegerField()
-    title = models.CharField(max_length = 50)
-
-class Vote(models.Model):
-    #season = models.PositiveIntegerField()
-    #episode = models.PositiveIntegerField()
-    #part = models.PositiveIntegerField()
-    theme = models.ForeignKey(Theme)
-    owner = models.ForeignKey(CustomUser)
-    
-#class ThemeBattle(models.Model):
-#    album1 = models.m
-
-class Album(models.Model):
-    album_id = models.CharField(max_length=32, primary_key=True, default=_createId)
-    title = models.CharField(max_length=30)
-    title_photo = models.OneToOneField(TitlePhoto)
-    owner = models.ForeignKey(CustomUser)
-    message = models.TextField(max_length=500)
-    time_created = models.DateTimeField(auto_now_add = True, default=datetime.date.today())
-    time_modified = models.DateTimeField(auto_now = True, default=datetime.date.today())
-    category = models.CharField(max_length=40)
-    unique_visit = models.PositiveIntegerField(default = 1)
-    all_visit = models.PositiveIntegerField(default = 1)
-    
-    # if category is theme
-    theme = models.ForeignKey(Theme, blank = True, null = True)
-    time_voted = models.DateTimeField(default=datetime.date.today())
-    elo = models.PositiveIntegerField(default = 1500)
-
-    def __unicode__(self):
-        return self.title
-
-class Photo(models.Model):
-    photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)
-    #title = models.CharField(max_length=30)#, min_length = 4)
-    image = models.ImageField(upload_to = _createPhotoPath)
-    album = models.ForeignKey(Album)
-    position = models.CharField(max_length=1)
-    
-    def __unicode__(self):
-        return '%s #%s' %(self.album.title, self.position)
-
 class Post(models.Model):
     post_id = models.CharField(max_length=32, primary_key=True, default=_createId)
-    owner = models.ForeignKey(CustomUser)
+    owner = models.ForeignKey(UserProfile)
     message = models.TextField(max_length=500)
     time_created = models.DateTimeField(auto_now_add = True, default=datetime.date.today())
     time_modified = models.DateTimeField(auto_now = True, default=datetime.date.today())
@@ -107,7 +75,7 @@ class Post(models.Model):
 class Comment(models.Model):
     comment_id = models.CharField(max_length=32, primary_key=True, default=_createId)
     #title = models.CharField(max_length=30)#, min_length = 4)
-    owner = models.ForeignKey(CustomUser)
+    owner = models.ForeignKey(UserProfile)
 
     message = models.TextField(max_length=100)
     time_created = models.DateTimeField(auto_now_add = True, default=datetime.date.today())
