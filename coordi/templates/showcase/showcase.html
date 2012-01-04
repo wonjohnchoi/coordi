@@ -13,33 +13,78 @@
         {% endfor %}
     </tr>
     {% for theme in themes %}
-    <tr>
-        <td>
-        <h1>{{theme.keyword}}</h1>
-        {{theme.subject}}
-        </td>
-        {% for album in theme.albums %}
-        <td>
-        <a href="/showcase/album/{{album.album_id}}/">
-        <img src="{{ MEDIA_URL }}photo/{{album.coordi.get_profile.photo.photo_id}}/"
-        height = 100 width = 100 /></a>        
-        </td>
-        {% endfor %}
-    </tr>
-    
-    <tr>
-        <td>
-        </td>
+        <tr>
+            <td>
+            <h1>{{theme.keyword}}</h1>
+            {{theme.subject}}
+            </td>
+            {% if theme.is_voted %}
+                {% for album in theme.albums %}
+                    <td>
+                    <a href="/showcase/album/{{album.album_id}}/">
+                    <img src="{{ MEDIA_URL }}photo/{{album.coordi.get_profile.photo.photo_id}}/"
+                    height = 100 width = 100 /></a>        
+                    </td>
+                {% endfor %}
+            {% else %}
+
+                {% if not unlocked %}
+                    <td>
+                    <form action="" method="post">{% csrf_token %}
+                    <button name="unlock" type="submit" value="{{theme.theme_id}}">Click to Unlock!</button>
+                    </form>
+                    </td>
+                
+                {% else %}
+                    {% if theme.theme_id == unlocked.theme_id %}
+                        {% for album in theme.albums %}
+                            <td>
+                            <a href="/showcase/album/{{album.album_id}}/">
+                            <img src="{{ MEDIA_URL }}photo/{{album.coordi.get_profile.photo.photo_id}}/"
+                            height = 100 width = 100 /></a>        
+                            </td>
+                        {% endfor %}
+                        
+                    {% else %}
+                        <td>
+                        Unlock Theme "{{unlocked.keyword}}" first.
+                        </td>
+                    {% endif %}
+                    
+                {% endif %}
+
+            {% endif %}
+        </tr>
         
-        {% for album in theme.albums %}
-        <td>
-        Votes: {{album.vote_set.count}}
-        </td>
-        {% endfor %}
-    </tr>
-    
+        {% if theme.is_voted %}
+        <tr>
+            <td>
+            </td>
+            
+            {% for album in theme.albums %}
+            <td> Votes: {{album.vote_set.count}}</td>
+            {% endfor %}
+        </tr>
+        {% else %}
+        
+            {% if unlocked and theme.theme_id == unlocked.theme_id %}
+                <td>
+                </td>
+                
+                {% for album in theme.albums %}
+                    <td>
+                    <form action="" method="post">{% csrf_token %}
+                    <button name="vote" type="submit" value="{{album.album_id}}">Click to Vote!</button>
+                    </form>
+                    </td>
+                {% endfor %}
+                    
+            {% endif %}
+        {% endif %}
     {% endfor %}
-<!--
+</table>
+
+{% comment %}
 <table>
 	<tr>
 	{% for theme in themes %}
@@ -73,5 +118,5 @@
     </tr>
     {% endfor %}
 </table>
--->
+{% endcomment %}
 {% endblock %}

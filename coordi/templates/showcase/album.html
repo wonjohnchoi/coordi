@@ -1,14 +1,19 @@
-{% extends "base/sidebar.html" %}
+{% extends "showcase/sidebar.html" %}
 
 {% block sidemain %}
-<h1>Episode {{album.theme.showcase.episode_id}} : {{album.theme.subject}}</h1>
-<h2>{{album.theme.title}}</h2>
+<h1>Episode {{album.theme.showcase.episode_id}} : {{album.theme.subject}}
+{% if album.coordi == user %}
+<a href="/showcase/workspace/{{album.theme.theme_pos}}/">Edit Your Album</a>
+{% endif %}
+</h1>
+<h2>Title: {{album.theme.title}}</h2>
 
 <table>
+
 {% for entry in entries %}
 <tr><td>
 <img src="{{ MEDIA_URL }}photo/{{entry.photo.photo_id}}/"
-height = 100 width = 100 /></a>    
+height = 300 width = 300 /></a>    
 </tr></td>
 <tr><td>{{entry.text}}</tr></td>
 
@@ -17,6 +22,7 @@ height = 100 width = 100 /></a>
 {% endblock %}
 
 
+{% comment %}
 {% block sidebar %}
 
 <h1><a href="">Previous Episodes</a></h1>
@@ -27,3 +33,4 @@ height = 100 width = 100 /></a>
 </table>
 {% endfor %}
 {% endblock %}
+{% endcomment %}

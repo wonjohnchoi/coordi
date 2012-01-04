@@ -28,7 +28,7 @@ class SignupForm(forms.Form):
     #birthday = forms.
     #gender
     photo = forms.ImageField(max_length = 500, required=False)
-    promocode = forms.CharField(max_length=20, required = False)
+    promocode = forms.CharField(max_length=35, required = False)
     
     def clean_username(self):
         if re.search(r'^[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*$', self.data['username']) is None:

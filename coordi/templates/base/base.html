@@ -23,10 +23,11 @@
 		<td><a href="/tryout/">Try-Out</a></td>-->
       <td><a href="/showcase/">Showcase</a></td>
 		
-		
+		{% comment %}
 	    {% if user.is_authenticated %}
 		<td><a href="/message/">Messages</a></td>   
 		{% endif %}
+		{% endcomment %}
 		
 		<td><form name="input" action="/search/" method="get">
 		<input type="text" name="arg" />
@@ -83,6 +84,7 @@
     {% endif %}
     
 	{% block content %} {% endblock %}
+	{% comment %}
     {% block footer %}
     <!--
 	<div id="footer">
@@ -94,6 +96,7 @@
 	</div>
 	-->
     {% endblock %}
+    {% endcomment %}
     
 </body>
 </html>

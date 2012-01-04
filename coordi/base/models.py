@@ -13,7 +13,7 @@ def _createPhotoPath(instance, filename):
     return os.path.join('photo', instance.photo_id)
 
 class Promocode(models.Model):
-    promocode_id = models.CharField(max_length = 30, default = _createId, unique = True)
+    promocode_id = models.CharField(max_length = 35, default = _createId, unique = True)
     permissions = models.ManyToManyField(Permission)
 class Photo(models.Model):
     photo_id = models.CharField(max_length=32, primary_key=True, default=_createId)

@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate
 from django.views.generic.simple import direct_to_template
 
 from coordi.base.forms import SignupForm, WallPostForm, WallCommentForm
-from coordi.base.models import UserProfile, Promocode, Post, Comment
+from coordi.base.models import UserProfile, Promocode, Post, Comment, Photo
+from coordi.showcase.models import Theme, Album, Showcase
 '''
 def find_codi(name):
     return find_customuser(name).codi
@@ -39,25 +40,43 @@ def signup(request):
         return HttpResponseRedirect('/')
     else:
         if request.method == 'POST':
-            form = SignupForm(request.POST)
+            form = SignupForm(request.POST, request.FILES)
+
             if form.is_valid():
                 cd = form.cleaned_data
+                print 'cd', cd
+                print request.FILES
+
                 new_user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
                 new_user.first_name = cd['first_name']
                 new_user.last_name = cd['last_name']
-                new_user.save()
                 
                 try:
                     promocode = Promocode.objects.get(promocode_id = cd['promocode'])
-                    for permission in promocode.permissions:
+                    for permission in promocode.permissions.all():
                         new_user.user_permissions.add(permission)
+                        if permission.content_type.app_label == 'showcase'\
+                        and permission.content_type.model == 'theme':
+                            new_showcase = Showcase.objects.filter().order_by('-episode_id')[0]
+                            new_album = Album(coordi = new_user,
+                                theme = Theme.objects.get(theme_pos = permission.codename,
+                                showcase = new_showcase))
+                            new_album.save()
 
-                    promocode.filter(promocode_id = cd['promocode']).delete()
+                    Promocode.objects.get(promocode_id = cd['promocode']).delete()
                 except Promocode.DoesNotExist:
                     pass
                 new_user.save()
                 
-                
+                new_image = cd['photo']
+                if new_image is not None:
+                    print 'not none!'
+                    photo = Photo(image = new_image)
+                    photo.save()
+                    new_user.get_profile().photo = photo
+                    new_user.get_profile().save()
+                else:
+                    print 'no photo :/'
                 return HttpResponseRedirect('/signup/thanks/')
         else:
             form = SignupForm(

@@ -1,0 +1,37 @@
+{% extends "showcase/sidebar.html" %}
+
+{% block sidemain %}
+
+
+    
+    <form action="" enctype="multipart/form-data" method="post">{% csrf_token %}
+        {% for field in entry_form %}
+            <div class="fieldWrapper">
+                {{ field.label_tag }}: {{ field }}
+            </div>
+        {% endfor %}
+        
+    
+    <table border="1px" align = "center">
+    {% for entry in entries %}
+    <tr><td align="middle" style="height: 50px; width: 200px">            
+    <button name="plus" value="{{forloop.counter}}" type="submit">+</button>    
+    </td></tr>
+    
+    <tr><td>
+    <button name="minus" value="{{forloop.counter}}" type="submit">
+    <img src="{{MEDIA_URL}}photo/{{entry.photo.photo_id}}/" height = 300 width = 300 />    
+    </button>    
+    
+    </td></tr>
+    <tr><td>{{entry.text}}</td></tr>
+    {% endfor %}
+
+    <tr><td align="middle" style="height: 25px; width: 50px">
+    <button name="plus" value="{{entries.count|add:"1"}}" type="submit">+</button>    
+    </td></tr>
+    
+    
+    </table>
+    </form>
+{% endblock %}
