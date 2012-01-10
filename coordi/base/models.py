@@ -20,6 +20,7 @@ class Photo(models.Model):
     #title = models.CharField(max_length=30)#, min_length = 4)
     image = models.ImageField(upload_to = _createPhotoPath)
 
+'''Points use notification system like that of Stackoverflow.com '''
 class UserProfile(models.Model):
     #user_id = models.CharField(max_length = 20, primary_key = True)
     #profile_photo = models.ImageField(upload_to=os.path.join(os.path.dirname(__file__), 'photo/codi/%d'%codi_id))
@@ -30,7 +31,7 @@ class UserProfile(models.Model):
     point = models.IntegerField(default = 0)
     cash = models.IntegerField(default = 0)
     photo = models.OneToOneField(Photo, blank = True, null = True)
-    
+    level = models.PositiveSmallIntegerField(default = 1)
     #accum_votes = models.PositiveIntegerField(default = 0)
     #required_votes = models.PositiveIntegerField(default = SHOWCASE_VOTES)
     #other = models.ManyToManyField('self', through = 'Message')

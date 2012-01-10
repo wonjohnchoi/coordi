@@ -1,10 +1,12 @@
 {% extends "showcase/sidebar.html" %}
 
 {% block sidemain %}
-
-
-    
+    <form action="" method="post">{% csrf_token %}
+        Title: <input type="text" size="25" name="title" value="{{album.title}}"/>
+        <input type="submit" value="Submit"/>
+    </form>
     <form action="" enctype="multipart/form-data" method="post">{% csrf_token %}
+    
         {% for field in entry_form %}
             <div class="fieldWrapper">
                 {{ field.label_tag }}: {{ field }}

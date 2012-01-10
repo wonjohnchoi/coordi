@@ -8,7 +8,7 @@ admin.autodiscover()
 from coordi.settings import MEDIA_URL, MEDIA_ROOT
 from coordi.base.views import custom_login, custom_logout, \
 main, how_it_works, signup, signup_thanks
-from coordi.showcase.views import showcase, redirect_showcase, album, workspace
+from coordi.showcase.views import showcase, uploading_showcase, showcase, voting_showcase, album, workspace
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'coordi.views.home', name='home'),
@@ -27,10 +27,12 @@ urlpatterns = patterns('',
     url(r'^$', main),
     url(r'^info/how_it_works/$', how_it_works),
     
-    url(r'^showcase/$', redirect_showcase),
+    url(r'^showcase_uploading/$', uploading_showcase),
+    url(r'^showcase_voting/$', voting_showcase),
+    
     url(r'^showcase/([1-9][0-9]*)/$', showcase),
     url(r'^showcase/album/(.*)/$', album),
-    url(r'^showcase/workspace/([1-9])/$', workspace),
+    url(r'^showcase/workspace/(.*)/$', workspace),
 
 )
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

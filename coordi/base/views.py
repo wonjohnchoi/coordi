@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate
 from django.views.generic.simple import direct_to_template
 
+
 from coordi.base.forms import SignupForm, WallPostForm, WallCommentForm
 from coordi.base.models import UserProfile, Promocode, Post, Comment, Photo
 from coordi.showcase.models import Theme, Album, Showcase

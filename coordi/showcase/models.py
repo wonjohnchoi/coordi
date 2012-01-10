@@ -2,20 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User, Permission
 import os, os.path
 from binascii import hexlify
-from coordi.base.models import Photo
+from coordi.base.models import Photo, _createId
 
-def _createId():
-    return hexlify(os.urandom(16))
-
-def _createPhotoPath(instance, filename):
-    return os.path.join('photo', instance.photo_id)
 # Create your models here.
 class Showcase(models.Model):
     showcase_id = models.CharField(max_length=32, primary_key=True, default=_createId)
-
-    time_start = models.DateTimeField()
-    time_end = models.DateTimeField()
+    
+    '''
+    time_vote_start = models.DateTimeField()
+    time_vote_end = models.DateTimeField()
+    time_upload_start = models.DateTimeField()
+    time_upload_end = models.DateTimeField()
+    '''
+    is_votable = models.BooleanField(default = False)
+    is_editable = models.BooleanField(default = False)
+    is_viewable = models.BooleanField(default = False)
+    is_closed = models.BooleanField(default = False)
+    #Phase of an album
+    # is_editable -> is_closed -> is_votable -> is_viewable
     episode_id = models.PositiveSmallIntegerField(unique = True)
+    def __unicode__(self):
+        return 'Episode %s'% self.episode_id
 
 class Theme(models.Model):
     theme_id = models.CharField(max_length=32, primary_key=True, default=_createId)
@@ -34,13 +41,14 @@ class Theme(models.Model):
             ("7", "Can work on theme 7."),
             ("8", "Can work on theme 8."),
         )
-
+    def __unicode__(self):
+        return 'Episode %s Theme %s' % (self.showcase.episode_id, self.theme_pos)
 
 class Album(models.Model):
     album_id = models.CharField(max_length=32, primary_key=True, default=_createId)
     theme = models.ForeignKey(Theme)
     coordi = models.ForeignKey(User)
-    title = models.CharField(max_length=50, null = True, blank = True, default = u'Untitled')
+    title = models.CharField(max_length=50, default = u'Untitled')
 
 class Unlock(models.Model):
     theme = models.ForeignKey(Theme)

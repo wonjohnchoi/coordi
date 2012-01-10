@@ -11,10 +11,32 @@ from collections import OrderedDict
 from django.contrib.auth.models import Permission
 from coordi.showcase.models import Showcase, Theme, Vote, Album, Unlock, Entry, Photo
 from coordi.showcase.forms import EntryForm
+import datetime
+def get_voting_showcase():
+    showcases = Showcase.objects().filter(Q(time_vote_start__lte = datetime.date.today()) & Q(time_vote_end__gte = datetime.date.today()))
+    if not showcases.exists():
+        return None
+    if showcases.count() != 1:
+        raise Exception('Fatal: There are multiple showcases in voting period')
+    return showcases[0]
+def get_uploading_showcase():
+    showcases = Showcase.objects().filter(Q(time_upload_start__lte = datetime.date.today()) & Q(time_upload_end__gte = datetime.date.today()))
+    if not showcases.exists():
+        return None
+    if showcases.count() != 1:
+        raise Exception('Fatal: There are multiple showcases in uploading period')
+    return showcases[0]
+
 @login_required
-def redirect_showcase(request):
-    episode_id = Showcase.objects.order_by('-episode_id')[0].episode_id
-    return HttpResponseRedirect('/showcase/%d'% episode_id)
+def voting_showcase(request):
+    episode_id = get_voting_showcase().episode_id
+    return HttpResponseRedirect('/showcase/%d/'% episode_id)
+@login_required
+def uploading_showcase(request):
+    episode_id = get_uploading_showcase().episode_id
+    return HttpResponseRedirect('/showcase/%d/'% episode_id)
+
+
 @login_required
 def showcase(request, new_episode_id):
     print 'accessing showcase/showcase'
@@ -64,7 +86,10 @@ def showcase(request, new_episode_id):
             albums = theme.album_set.all()
         profile['albums'] = albums
         themeProfiles.append(profile)
-    max_albums = max(theme.album_set.count() for theme in theme_queryset)
+    if theme_queryset.exists():
+        max_albums = max(theme.album_set.count() for theme in theme_queryset)
+    else:
+        max_albums = 0
     print unlocked
     return render_to_response('showcase/showcase.html', {'themes': themeProfiles, 'max_albums' : range(max_albums), 'unlocked' : unlocked_theme}, context_instance = RequestContext(request))
 
@@ -137,7 +162,11 @@ def workspace(request, new_theme_pos):
                     entry = entries.get(entry_pos = unicode(pos))
                     entry.entry_pos = unicode(pos - 1)
                     entry.save()
-
+        print request.POST
+        if 'title' in request.POST:
+            
+            new_album.title = request.POST['title']
+            new_album.save()
     if entry_form is None:
         entry_form = EntryForm(initial={'text':'Describe this photo'})#, prefix = 'create_entry')
     if request.method == 'POST':
@@ -145,5 +174,3 @@ def workspace(request, new_theme_pos):
 
     return render_to_response('showcase/workspace.html', {'coordi':new_album.coordi, 'entry_form': entry_form, 'album' : new_album, 'entries' :entries}, context_instance = RequestContext(request))
         
-    
-    
